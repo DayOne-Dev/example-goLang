@@ -19,8 +19,8 @@ jobs:
     env:
       JF_RT_URL: https://${{ vars.JF_NAME }}.jfrog.io
       RT_REPO_GO_VIRTUAL: 'krishnam-go-virtual'
-      BUILD_NAME: "hello-world"
-      BUILD_ID: "ga-go-${{ github.run_number }}"
+      BUILD_NAME: "go-hello-world"
+      BUILD_ID: "ga.${{ github.run_number }}"
     timeout-minutes: 20   # ref  https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes
     steps:
         # Use the specific setup-cli branch. Ref https://github.com/marketplace/actions/setup-jfrog-cli
@@ -57,14 +57,15 @@ jobs:
           # jf config
           jf config show
 
-      - name: Config jf with GO repos
+      - name: Config jf with GO repos # ref: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-artifactory/package-managers-integration#setting-go-repositories
         run: |
-          jf go-config --repo-deploy ${{ env.RT_REPO_GO_VIRTUAL}}  --repo-resolve ${{ env.RT_REPO_GO_VIRTUAL}}
+          jf go-config --global --repo-deploy ${{ env.RT_REPO_GO_VIRTUAL}}  --repo-resolve ${{ env.RT_REPO_GO_VIRTUAL}}
 
       - name: list folder
         run: |
           pwd
           ls -lart
+          cd /home/runner/work/example-goLang/example-goLang
 
       - name: prestep-summary
         run: |
@@ -77,15 +78,15 @@ jobs:
           echo " - Configured the JFrog Cli with SaaS Artifactory OIDC integration: ${{ vars.JF_OIDC_PROVIDER_NAME }} " >> $GITHUB_STEP_SUMMARY
 
 # Package
-      - name: GO Build
+      - name: GO Build  # ref: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-artifactory/package-managers-integration#running-go-commandss
             # go build -v ./...
         run: |
           jf go build --build-name=${{ env.BUILD_NAME }} --build-number=${{ env.BUILD_ID }} -v
 
-      - name: GO publish
+      - name: GO publish  # ref: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-artifactory/package-managers-integration#publishing-go-packages-to-artifactory
             # go test -v ./...
         run: |
-          jf go-publish v1.0.0 --build-name=${{ env.BUILD_NAME }} --build-number=${{ env.BUILD_ID }} --detailed-summary 
+          jf go-publish v1.0.0 --build-name ${{ env.BUILD_NAME }} --build-number ${{ env.BUILD_ID }} --detailed-summary 
 
  # Build Info
     # Executive Order: 

@@ -8,7 +8,7 @@ echo "\n\n**** JFCLI-GO.SH - BEGIN at $(date '+%Y-%m-%d-%H-%M') ****\n\n"
 export JF_HOST="psazuse.jfrog.io"  JFROG_RT_USER="krishnam" JFROG_CLI_LOG_LEVEL="DEBUG" # JF_ACCESS_TOKEN="<GET_YOUR_OWN_KEY>"
 export JF_RT_URL="https://${JF_HOST}"
 
-export RT_REPO_VIRTUAL="krishnam-go-virtual" BUILD_NAME="hello" BUILD_ID="cmd.$(date '+%Y-%m-%d-%H-%M')" VERSION="v$(date '+%d.%H.%M')"
+export RT_REPO_VIRTUAL="krishnam-go-virtual" BUILD_NAME="go-hello-world" BUILD_ID="cmd.$(date '+%Y-%m-%d-%H-%M')" VERSION="v$(date '+%d.%H.%M')"
 
 echo "JF_RT_URL: $JF_RT_URL \n JFROG_RT_USER: $JFROG_RT_USER \n JFROG_CLI_LOG_LEVEL: $JFROG_CLI_LOG_LEVEL \n "
 echo "\n JF version $(jf -v) \n Go version $(go version) \n\n"
@@ -24,19 +24,20 @@ jf go clean
 
 set -x # activate debugging from here
 
-# GO: Config
+# GO: Config  # ref: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-artifactory/package-managers-integration#setting-go-repositories
 echo "\n\n**** PACKAGE: Config ****\n"
 jf go-config --repo-deploy=$RT_REPO_VIRTUAL  --repo-resolve=$RT_REPO_VIRTUAL 
 
 jf go list -mod=mod -m
 
-# GO: build
+# GO: build  # ref: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-artifactory/package-managers-integration#running-go-commandss
+            # go build -v ./...
 echo "\n\n**** PACKAGE: Build ****\n"
 jf go build --build-name=${BUILD_NAME} --build-number=${BUILD_ID} -v
 
-# GO: Publish
+# GO: Publish  # ref: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-artifactory/package-managers-integration#publishing-go-packages-to-artifactory
 echo "\n\n**** PACKAGE: Publish ****\n"
-jf go-publish v1.0.0 --build-name=${BUILD_NAME} --build-number=${BUILD_ID} --detailed-summary 
+jf go-publish v1.0.0 --build-name ${BUILD_NAME} --build-number ${BUILD_ID} --detailed-summary 
 
 # GO: run
 echo "\n\n**** GO: RUN ****\n"
