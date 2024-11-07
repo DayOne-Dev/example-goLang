@@ -19,7 +19,7 @@ jobs:
     env:
       JF_RT_URL: https://${{ vars.JF_NAME }}.jfrog.io
       RT_REPO_GO_VIRTUAL: 'krishnam-go-virtual'
-      BUILD_NAME: "go-hello-world"
+      BUILD_NAME: "go-helloworld"
       BUILD_ID: "ga-${{ github.run_number }}"
     timeout-minutes: 20   # ref  https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes
     steps:
@@ -65,7 +65,8 @@ jobs:
         run: |
           pwd
           ls -lart
-          cd /home/runner/work/example-goLang/example-goLang
+          cd /home/runner/work/example-goLang/example-goLang/src
+          go env
 
       - name: prestep-summary
         run: |
@@ -86,7 +87,7 @@ jobs:
       - name: GO publish  # ref: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-artifactory/package-managers-integration#publishing-go-packages-to-artifactory
             # go test -v ./...
         run: |
-          jf go-publish v1.0.0 --build-name ${{ env.BUILD_NAME }} --build-number ${{ env.BUILD_ID }} --detailed-summary 
+          jf go-publish v1.${{ github.run_number }}.0 --build-name ${{ env.BUILD_NAME }} --build-number ${{ env.BUILD_ID }} --detailed-summary 
 
  # Build Info
     # Executive Order: 
@@ -107,3 +108,5 @@ jobs:
  # TEST
       - name: GO run
         run: jf go run . -v
+
+        

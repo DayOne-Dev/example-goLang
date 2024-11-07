@@ -8,19 +8,21 @@ echo "\n\n**** JFCLI-GO.SH - BEGIN at $(date '+%Y-%m-%d-%H-%M') ****\n\n"
 export JF_HOST="psazuse.jfrog.io"  JFROG_RT_USER="krishnam" JFROG_CLI_LOG_LEVEL="DEBUG" # JF_ACCESS_TOKEN="<GET_YOUR_OWN_KEY>"
 export JF_RT_URL="https://${JF_HOST}"
 
-export RT_REPO_VIRTUAL="krishnam-go-virtual" BUILD_NAME="go-hello-world" BUILD_ID="cmd.$(date '+%Y-%m-%d-%H-%M')" VERSION="v$(date '+%d.%H.%M')"
+export RT_REPO_VIRTUAL="krishnam-go-virtual" BUILD_NAME="go-helloworld" BUILD_ID="cmd.$(date '+%Y-%m-%d-%H-%M')" VERSION="v$(date '+%d.%H.%M')"
 
 echo "JF_RT_URL: $JF_RT_URL \n JFROG_RT_USER: $JFROG_RT_USER \n JFROG_CLI_LOG_LEVEL: $JFROG_CLI_LOG_LEVEL \n "
 echo "\n JF version $(jf -v) \n Go version $(go version) \n\n"
 ## Health check
 jf rt ping --url=${JF_RT_URL}/artifactory
 
+cd src
+
 # GO: clean
 # rm -rf .jfrog
 jf go clean
 
 # #init
-# go mod tidy && go mod init hello
+# go mod tidy && go mod init src/go-helloworld
 
 set -x # activate debugging from here
 
@@ -55,3 +57,4 @@ jf rt bp ${BUILD_NAME} ${BUILD_ID} --detailed-summary
 
 set +x # stop debugging from here
 echo "\n\n**** JFCLI-GO.SH - DONE at $(date '+%Y-%m-%d-%H-%M') ****\n\n"
+cd ..
