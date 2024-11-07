@@ -85,7 +85,7 @@ jobs:
       - name: GO publish
             # go test -v ./...
         run: |
-          jf go-publish v1.0.0 --build-name=${{ env.BUILD_NAME }} --build-number=${{ env.BUILD_ID }} --detailed-summary -v
+          jf go-publish v1.0.0 --build-name=${{ env.BUILD_NAME }} --build-number=${{ env.BUILD_ID }} --detailed-summary 
 
  # Build Info
     # Executive Order: 
