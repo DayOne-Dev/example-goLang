@@ -29,6 +29,7 @@ echo "\n\n**** PACKAGE: Config ****\n"
 jf go-config --repo-deploy=$RT_REPO_VIRTUAL  --repo-resolve=$RT_REPO_VIRTUAL 
 
 jf go list -mod=mod -m
+jf go list -mod=mod -f {{with .Module}}{{.Path}}:{{.Version}}{{end}} all
 
 # GO: build  # ref: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-artifactory/package-managers-integration#running-go-commandss
             # go build -v ./...

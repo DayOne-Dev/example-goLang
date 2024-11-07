@@ -20,7 +20,7 @@ jobs:
       JF_RT_URL: https://${{ vars.JF_NAME }}.jfrog.io
       RT_REPO_GO_VIRTUAL: 'krishnam-go-virtual'
       BUILD_NAME: "go-hello-world"
-      BUILD_ID: "ga.${{ github.run_number }}"
+      BUILD_ID: "ga-${{ github.run_number }}"
     timeout-minutes: 20   # ref  https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes
     steps:
         # Use the specific setup-cli branch. Ref https://github.com/marketplace/actions/setup-jfrog-cli
