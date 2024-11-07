@@ -26,21 +26,21 @@ set -x # activate debugging from here
 
 # GO: Config
 echo "\n\n**** PACKAGE: Config ****\n"
-jf go-config --repo-deploy=$RT_REPO_VIRTUAL  --repo-resolve=$RT_REPO_VIRTUAL
+jf go-config --repo-deploy=$RT_REPO_VIRTUAL  --repo-resolve=$RT_REPO_VIRTUAL -v
 
 jf go list -mod=mod -m
 
 # GO: build
 echo "\n\n**** PACKAGE: Build ****\n"
-jf go build --build-name=${BUILD_NAME} --build-number=${BUILD_ID}
+jf go build --build-name=${BUILD_NAME} --build-number=${BUILD_ID} -v
 
 # GO: Publish
 echo "\n\n**** PACKAGE: Publish ****\n"
-jf go-publish v1.0.0 --build-name=${BUILD_NAME} --build-number=${BUILD_ID} --detailed-summary
+jf go-publish v1.0.0 --build-name=${BUILD_NAME} --build-number=${BUILD_ID} --detailed-summary -v
 
 # GO: run
 echo "\n\n**** GO: RUN ****\n"
-jf go run .
+jf go run . -v
 
 # Build Publish
 echo "\n\n**** Build Info: Publish ****\n\n"
